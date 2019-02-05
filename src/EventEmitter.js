@@ -5,10 +5,15 @@ export class EventEmitter {
 
   subscribe(eventName, cb) {
     this.subscriptions[eventName] = cb;
+    return () => {
+      delete this.subscriptions[eventName];
+    }
   }
 
   emit(eventName) {
-    this.subscriptions[eventName].call();
+    if (this.subscriptions.hasOwnProperty(eventName)) {
+      this.subscriptions[eventName].call();
+    }
   }
 
 }
