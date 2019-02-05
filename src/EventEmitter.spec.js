@@ -22,4 +22,22 @@ describe('EventEmitter', () => {
     eventEmitter.emit(mockEventName);
     expect(mockCallback).toHaveBeenCalled();
   });
+
+  it('should be able to call emit multiple times', () => {
+    eventEmitter.subscribe(mockEventName, mockCallback);
+    eventEmitter.emit(mockEventName);
+    eventEmitter.emit(mockEventName);
+    eventEmitter.emit(mockEventName);
+    expect(mockCallback).toHaveBeenCalledTimes(3);
+  });
+
+  it('should be able to subscribe to an event more than once.', () => {
+    const mockCallback2 = jest.fn();
+    eventEmitter.subscribe(mockEventName, mockCallback);
+    eventEmitter.subscribe(mockEventName, mockCallback2);
+    eventEmitter.emit(mockEventName);
+    expect(mockCallback).toHaveBeenCalledTimes(1);
+    expect(mockCallback2).toHaveBeenCalledTimes(1);
+  });
+
 });
